@@ -1,4 +1,4 @@
-import { Todo } from '@prisma/client';
+import { TTodo } from './todo.model';
 
 export type TUser = {
   id: string;
@@ -6,8 +6,9 @@ export type TUser = {
   email: string;
   fullName: string;
   password?: string;
-  createdAt: Date;
-  Todo: Todo;
+  createdAt?: Date;
+  updatedAt?: Date;
+  todos?: TTodo[];
 };
 
 export type TDecode = { type: string; user: TUser };

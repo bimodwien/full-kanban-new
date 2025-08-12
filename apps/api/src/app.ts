@@ -11,6 +11,7 @@ import cors from 'cors';
 import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
 import { UserRouter } from './routers/user.router';
+import { TodoRouter } from './routers/todo.router';
 
 export default class App {
   private app: Express;
@@ -54,6 +55,7 @@ export default class App {
   private routes(): void {
     const sampleRouter = new SampleRouter();
     const userRouter = new UserRouter();
+    const todoRouter = new TodoRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, From Kanban Barunya Bimo!`);
@@ -61,6 +63,7 @@ export default class App {
 
     this.app.use('/api/samples', sampleRouter.getRouter());
     this.app.use('/api/users', userRouter.getRouter());
+    this.app.use('/api/todos', todoRouter.getRouter());
   }
 
   public start(): void {
