@@ -21,7 +21,7 @@
     "tsconfig": "*",
     "turbo": "latest"
   },
-  "name": "finpro-nextjs-express-prisma",
+  "name": "kanban-nextjs-express-prisma",
   "packageManager": "npm@11.5.2",
   "workspaces": [
     "apps/*",

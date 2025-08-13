@@ -8,7 +8,8 @@ import express, {
   Router,
 } from 'express';
 import cors from 'cors';
-import { PORT } from './config';
+
+import { PORT, corsOption } from './config';
 import { SampleRouter } from './routers/sample.router';
 import { UserRouter } from './routers/user.router';
 import { TodoRouter } from './routers/todo.router';
@@ -24,7 +25,7 @@ export default class App {
   }
 
   private configure(): void {
-    this.app.use(cors());
+    this.app.use(cors(corsOption));
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
   }
