@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '@/lib/redux/hooks';
@@ -84,15 +85,17 @@ function LoginPage() {
                 Welcome Back!
               </h1>
               <p className="text-xl text-white/90 font-normal max-w-md">
-                Your tasks are waiting. Let's get started and boost your
+                Your tasks are waiting. Let&apos;s get started and boost your
                 productivity.
               </p>
             </div>
             <div className="w-80 h-80 relative">
-              <img
+              <Image
                 src="/kanban-board-illustration.png"
                 alt="Kanban Board Illustration"
                 className="w-full h-full object-contain drop-shadow-xl"
+                layout="fill"
+                objectFit="contain"
               />
             </div>
           </div>
@@ -150,7 +153,7 @@ function LoginPage() {
                   </Button>
                 </form>
                 <div className="text-center text-sm text-gray-600">
-                  Don't have an account?{' '}
+                  Don&apos;t have an account?{' '}
                   <Link
                     href="/register"
                     className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
