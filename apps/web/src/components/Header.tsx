@@ -20,7 +20,6 @@ const Header = () => {
     dispatch(logout());
 
     toast.success('Logged out successfully', {
-      description: 'See you next time!',
       duration: 2000,
     });
 

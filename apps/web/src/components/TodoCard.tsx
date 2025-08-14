@@ -43,7 +43,6 @@ const TodoCard = ({ todo, onDragStart, onDelete, onEdit }: TodoCardProps) => {
 
     const dateObj = typeof date === 'string' ? new Date(date) : date;
 
-    // Check if date is valid
     if (isNaN(dateObj.getTime())) return 'Invalid date';
 
     return dateObj.toLocaleDateString('en-US', {
@@ -60,7 +59,6 @@ const TodoCard = ({ todo, onDragStart, onDelete, onEdit }: TodoCardProps) => {
       onDragStart={onDragStart}
     >
       <div className="space-y-3">
-        {/* Priority Badge with Action Buttons */}
         <div className="flex items-center justify-between">
           <Badge
             variant="secondary"
@@ -94,17 +92,14 @@ const TodoCard = ({ todo, onDragStart, onDelete, onEdit }: TodoCardProps) => {
           </div>
         </div>
 
-        {/* Task Title */}
         <h3 className="text-base font-medium text-gray-900 leading-relaxed">
           {todo.title}
         </h3>
 
-        {/* Task Content */}
         <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
           {todo.content}
         </p>
 
-        {/* Footer with Date and User Avatar */}
         <div className="flex items-center justify-between pt-2">
           <span className="text-sm text-gray-500">
             {formatDate(todo.createdAt)}

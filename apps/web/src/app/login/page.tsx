@@ -44,11 +44,9 @@ function LoginPage() {
         );
 
         toast.success('Login successful!', {
-          description: 'Welcome back! Redirecting to dashboard...',
-          duration: 2000, // 2 seconds
+          duration: 2000,
         });
 
-        // Small delay to show toast before redirect
         setTimeout(() => {
           window.location.href = '/';
         }, 1000);
@@ -60,7 +58,7 @@ function LoginPage() {
 
         toast.error('Login failed', {
           description: errorMessage,
-          duration: 3000, // 3 seconds for errors
+          duration: 3000,
         });
 
         setIsLoading(false);
@@ -78,7 +76,7 @@ function LoginPage() {
       />
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-sky-500/10 to-transparent" />
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
-        <div className="flex w-full max-w-6xl items-center justify-between gap-12">
+        <div className="flex w-full max-w-6xl items-center justify-center lg:justify-between gap-12">
           <div className="hidden lg:flex flex-col space-y-8 flex-1">
             <div className="space-y-4">
               <h1 className="text-5xl font-black text-white drop-shadow-lg">
@@ -93,9 +91,10 @@ function LoginPage() {
               <Image
                 src="/kanban-board-illustration.png"
                 alt="Kanban Board Illustration"
-                className="w-full h-full object-contain drop-shadow-xl"
-                layout="fill"
-                objectFit="contain"
+                fill
+                priority
+                sizes="(max-width: 1024px) 0px, 320px"
+                className="object-contain drop-shadow-xl"
               />
             </div>
           </div>

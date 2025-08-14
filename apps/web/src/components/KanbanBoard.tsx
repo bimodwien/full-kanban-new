@@ -25,7 +25,6 @@ function KanbanBoard() {
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [editingTask, setEditingTask] = useState<TTodo | null>(null);
 
-  // Delete confirmation dialog state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState<TTodo | null>(null);
 
@@ -112,12 +111,9 @@ function KanbanBoard() {
 
     try {
       await deleteTodos(todoToDelete.id);
-      // Remove from local state
       setTodos((prevTodos) =>
         prevTodos.filter((t) => t.id !== todoToDelete.id),
       );
-
-      // Show success toast
       toast.success('Todo deleted successfully', {
         duration: 2000,
       });
@@ -149,7 +145,6 @@ function KanbanBoard() {
   };
 
   const handleSaveTodo = () => {
-    // Close modal and refresh todos
     setIsModalOpen(false);
     fetchTodos(setTodos);
   };
@@ -207,10 +202,12 @@ function KanbanBoard() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="cursor-pointer">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDeleteTodo}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600 cursor-pointer"
             >
               Delete
             </AlertDialogAction>

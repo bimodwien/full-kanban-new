@@ -180,7 +180,6 @@ const TodoModal = ({ isOpen, onClose, onSave, todo, mode }: TodoModalProps) => {
                     : ''
                 }
                 onKeyDown={(e) => {
-                  // Allow new lines with Shift+Enter, but prevent form submission with just Enter
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.stopPropagation(); // Prevent the dialog's keydown handler
                   }

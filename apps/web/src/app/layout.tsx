@@ -4,7 +4,7 @@ import StoreProvider from '@/components/providers/store.provider';
 import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
-  title: 'Kanban Board',
+  title: 'Kanban Bimo',
   description: 'A Kanban board application built with Next.js',
 };
 

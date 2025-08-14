@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Register',
+  title: 'Kanban Bimo - Register',
   description: 'Create a new account',
 };
 
