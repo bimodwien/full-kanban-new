@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import StoreProvider from '@/components/providers/store.provider';
+import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
   title: 'Kanban Board',
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StoreProvider>{children}</StoreProvider>
+        <Toaster />
       </body>
     </html>
   );

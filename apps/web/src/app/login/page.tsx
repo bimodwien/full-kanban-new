@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
 function LoginPage() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -40,12 +41,27 @@ function LoginPage() {
             password: values.password,
           }),
         );
-        window.location.href = '/';
+
+        toast.success('Login successful!', {
+          description: 'Welcome back! Redirecting to dashboard...',
+          duration: 2000, // 2 seconds
+        });
+
+        // Small delay to show toast before redirect
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       } catch (error) {
         let errorMessage = 'An error occurred. Please try again.';
         if (error instanceof Error) {
           errorMessage = error.message;
         }
+
+        toast.error('Login failed', {
+          description: errorMessage,
+          duration: 3000, // 3 seconds for errors
+        });
+
         setIsLoading(false);
       }
     },
