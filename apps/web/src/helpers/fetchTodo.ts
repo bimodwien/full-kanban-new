@@ -20,6 +20,6 @@ export const deleteTodos = async (id: string) => {
   try {
     await axios.delete(`/todos/${id}`);
   } catch (error) {
-    throw new Error('Failed to delete todos');
+    throw error;
   }
 };

@@ -50,15 +50,27 @@ function LoginPage() {
         setTimeout(() => {
           window.location.href = '/';
         }, 1000);
-      } catch (error) {
+      } catch (error: any) {
         let errorMessage = 'An error occurred. Please try again.';
-        if (error instanceof Error) {
+
+        // Extract backend error message
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response?.data?.error) {
+          errorMessage = error.response.data.error;
+        } else if (error.message) {
           errorMessage = error.message;
         }
 
         toast.error('Login failed', {
           description: errorMessage,
           duration: 3000,
+          style: {
+            background: '#fef2f2',
+            color: '#991b1b',
+            border: '1px solid #fecaca',
+            fontWeight: '500',
+          },
         });
 
         setIsLoading(false);

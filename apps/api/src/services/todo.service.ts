@@ -75,12 +75,15 @@ class TodoService {
     const todo = await prisma.todo.findUnique({
       where: {
         id: id,
-        userId: userId,
       },
     });
 
     if (!todo) {
       throw new Error('Todo not found');
+    }
+
+    if (todo.userId !== userId) {
+      throw new Error('User not authorized to update this todo');
     }
 
     const updatedTodo = await prisma.todo.update({
@@ -114,13 +117,14 @@ class TodoService {
     const todo = await prisma.todo.findUnique({
       where: {
         id: id,
-        userId: userId,
       },
     });
 
     if (!todo) {
       throw new Error('Todo not found');
     }
+
+    // Then check authorization
     if (todo.userId !== userId) {
       throw new Error('User not authorized to update this todo');
     }

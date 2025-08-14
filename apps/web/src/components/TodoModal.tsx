@@ -99,12 +99,24 @@ const TodoModal = ({ isOpen, onClose, onSave, todo, mode }: TodoModalProps) => {
         onSave();
         onClose();
         formik.resetForm();
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error saving todo:', error);
+
+        let errorMessage = 'Please try again';
+
+        // Extract backend error message
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response?.data?.error) {
+          errorMessage = error.response.data.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+
         toast.error(
           mode === 'add' ? 'Failed to create todo' : 'Failed to update todo',
           {
-            description: 'Please try again',
+            description: errorMessage,
             duration: 3000,
           },
         );

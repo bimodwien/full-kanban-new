@@ -88,9 +88,20 @@ function KanbanBoard() {
         toast.success(`Todo moved to ${statusText}`, {
           duration: 2000,
         });
-      } catch (error) {
-        console.error('Failed to update todo status:', error);
+      } catch (error: any) {
+        let errorMessage = 'An error occurred. Please try again.';
+
+        // Extract backend error message
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response?.data?.error) {
+          errorMessage = error.response.data.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+
         toast.error('Failed to update todo status', {
+          description: errorMessage,
           duration: 3000,
         });
       }
@@ -117,10 +128,19 @@ function KanbanBoard() {
       toast.success('Todo deleted successfully', {
         duration: 2000,
       });
-    } catch (error) {
-      console.error('Failed to delete todo:', error);
+    } catch (error: any) {
+      let errorMessage = 'An error occurred. Please try again.';
+
+      // Extract backend error message
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
       toast.error('Failed to delete todo', {
-        description: 'Please try again',
+        description: errorMessage,
         duration: 3000,
       });
     } finally {

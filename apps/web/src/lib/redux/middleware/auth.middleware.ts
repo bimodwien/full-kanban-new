@@ -17,7 +17,7 @@ export const userLogin = ({ username, password }: TUser) => {
       if (typeof access_token === 'string') {
         const decoded = jwtDecode<{ user: TUser }>(access_token);
         if (!decoded.user) {
-          return;
+          throw new Error('Invalid token data');
         }
         const userData = decoded.user;
         dispatch(login(userData));
@@ -29,6 +29,9 @@ export const userLogin = ({ username, password }: TUser) => {
       console.error('Login failed: ', error);
       deleteCookie('access_token');
       deleteCookie('refresh_token');
+
+      // Re-throw error so frontend can catch it
+      throw error;
     }
   };
 };

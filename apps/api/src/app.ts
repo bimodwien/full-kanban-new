@@ -45,7 +45,12 @@ export default class App {
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         if (req.path.includes('/api/')) {
           console.error('Error : ', err.stack);
-          res.status(500).send('Error !');
+
+          // Send proper error message to frontend
+          res.status(400).json({
+            message: err.message || 'An error occurred',
+            error: true,
+          });
         } else {
           next();
         }

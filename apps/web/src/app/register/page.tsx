@@ -47,13 +47,19 @@ const Register = () => {
         setTimeout(() => {
           window.location.href = '/login';
         }, 1000);
-      } catch (error) {
+      } catch (error: any) {
         let errorMessage = 'An error occurred. Please try again.';
-        if (error instanceof Error) {
+
+        // Extract backend error message
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response?.data?.error) {
+          errorMessage = error.response.data.error;
+        } else if (error.message) {
           errorMessage = error.message;
         }
 
-        toast.error('Register failed', {
+        toast.error('Registration failed', {
           description: errorMessage,
           duration: 3000,
         });
