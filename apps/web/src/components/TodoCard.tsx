@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { Trash2, Edit3 } from 'lucide-react';
 import type { TTodo } from '@/models/todo.model';
+import { text } from 'stream/consumers';
 
 interface TodoCardProps {
   todo: TTodo;
@@ -36,6 +37,18 @@ const TodoCard = ({ todo, onDragStart, onDelete, onEdit }: TodoCardProps) => {
       .join('')
       .toUpperCase()
       .slice(0, 2);
+  };
+
+  const toTitleCase = (text: string) => {
+    return text
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  const toCapitalizeFirstLetter = (text: string) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   };
 
   const formatDate = (date: Date | string | undefined) => {
@@ -93,11 +106,11 @@ const TodoCard = ({ todo, onDragStart, onDelete, onEdit }: TodoCardProps) => {
         </div>
 
         <h3 className="text-base font-medium text-gray-900 leading-relaxed">
-          {todo.title}
+          {toTitleCase(todo.title)}
         </h3>
 
         <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
-          {todo.content}
+          {toCapitalizeFirstLetter(todo.content ? todo.content : '')}
         </p>
 
         <div className="flex items-center justify-between pt-2">
