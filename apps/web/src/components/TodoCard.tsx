@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { Trash2, Edit3 } from 'lucide-react';
 import type { TTodo } from '@/models/todo.model';
-import { text } from 'stream/consumers';
 
 interface TodoCardProps {
   todo: TTodo;
