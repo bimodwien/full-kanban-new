@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  database:
+    image: mysql:8.0
+    container_name: kanban-database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - '3308:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - kanban-network
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+
+  # API Service (Express.js + Prisma)
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    container_name: kanban-api
+    restart: unless-stopped
+    ports:
+      - '8002:8002'
+    environment:
+      PORT: 8002
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      CLIENT_URL: ${CLIENT_URL}
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - kanban-network
+    volumes:
+      - ./apps/api/prisma:/app/prisma
+    command: >
+      sh -c "
+        npx prisma migrate deploy &&
+        npm run serve
+      "
+
+  # Web Service (Next.js)
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: kanban-web
+    restart: unless-stopped
+    ports:
+      - '3002:3002'
+    environment:
+      PORT: 3002
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    depends_on:
+      - api
+    networks:
+      - kanban-network
+
+# Volumes for persistent data
+volumes:
+  mysql_data:
+
+# Networks
+networks:
+  kanban-network:
+    driver: bridge
