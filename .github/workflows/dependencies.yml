@@ -1,0 +1,76 @@
+name: 📦 Dependency Updates
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' # Every Monday at 2 AM
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    name: 🔄 Update Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 📦 Update root dependencies
+        run: |
+          npm update
+          git add package*.json
+
+      - name: 📦 Update API dependencies
+        run: |
+          cd apps/api
+          npm update
+          git add package*.json
+
+      - name: 📦 Update Web dependencies
+        run: |
+          cd apps/web
+          npm update
+          git add package*.json
+
+      - name: 🔍 Check for changes
+        id: changes
+        run: |
+          if git diff --staged --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📝 Create Pull Request
+        if: steps.changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update dependencies'
+          title: '📦 Automated dependency updates'
+          body: |
+            ## 📦 Automated Dependency Updates
+
+            This PR contains automated updates to npm dependencies.
+
+            ### 🔍 What changed:
+            - Root dependencies updated
+            - API dependencies updated  
+            - Web dependencies updated
+
+            ### ✅ Checklist:
+            - [ ] Review changes
+            - [ ] Test locally with Docker
+            - [ ] Verify CI passes
+
+            ---
+            *This PR was created automatically by GitHub Actions*
+          branch: chore/dependency-updates
+          delete-branch: true

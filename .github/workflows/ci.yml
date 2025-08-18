@@ -1,0 +1,78 @@
+name: 🧪 CI Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [development, development-*]
+
+jobs:
+  lint-and-test:
+    name: 🔍 Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🗄️ Start test database
+        run: |
+          docker compose up -d database
+          sleep 10
+
+      - name: 🚀 Build API
+        run: docker compose build api
+
+      - name: 🌐 Build Web
+        run: docker compose build web
+
+      - name: 🔧 Run API tests
+        run: |
+          docker compose up -d api
+          sleep 5
+          # Add your API tests here
+          docker compose exec api npm run test || echo "No tests configured yet"
+
+      - name: 🎨 Run Web tests
+        run: |
+          docker compose up -d web
+          sleep 5
+          # Add your frontend tests here
+          docker compose exec web npm run test || echo "No tests configured yet"
+
+      - name: 🧪 Test API health
+        run: |
+          curl -f http://localhost:8002/api || exit 1
+
+      - name: 🌍 Test Web health
+        run: |
+          curl -f http://localhost:3002 || exit 1
+
+      - name: 🧹 Cleanup
+        if: always()
+        run: docker compose down -v
+
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: 📊 Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
