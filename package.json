@@ -3,9 +3,6 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "dev:api": "cd apps/api && npm run dev",
-    "dev:web": "cd apps/web && npm run dev",
-    "dev:laptop": "npm run dev:api & npm run dev:web",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "serve": "turbo run serve",
